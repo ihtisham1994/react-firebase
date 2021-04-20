@@ -2,14 +2,14 @@ import React, {useRef} from "react";
 import {Link} from "react-router-dom";
 
 
-const Signin = () => {
+const Signup = () => {
 
     const emailRef = useRef();
     const passwordRef = useRef();
 
     const getFormData = (e) => {
         e.preventDefault();
-        console.log("Email--->>>", emailRef.current.value, "Password--->>>", passwordRef.current.value);
+        console.log("Email--->>>", emailRef.current.value, "Password--->>>", passwordRef.current.value );
     };
 
     return (
@@ -20,12 +20,12 @@ const Signin = () => {
                     src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                     alt="Workflow"
                 />
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign Up</h2>
                 <p className="mt-2 text-center text-sm text-gray-600 max-w">
                     Or{' '}
-                    <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-                        Create an account
-                    </Link>
+                    <p className="font-medium text-indigo-600 hover:text-indigo-500">
+                        Already have an account ? <Link to="/signin"> Sign in </Link>
+                    </p>
                 </p>
             </div>
 
@@ -37,7 +37,8 @@ const Signin = () => {
                                 Email address
                             </label>
                             <div className="mt-1">
-                                <input ref={emailRef}
+                                <input
+                                    ref={emailRef}
                                     id="email"
                                     name="email"
                                     type="email"
@@ -53,7 +54,8 @@ const Signin = () => {
                                 Password
                             </label>
                             <div className="mt-1">
-                                <input ref={passwordRef}
+                                <input
+                                    ref={passwordRef}
                                     id="password"
                                     name="password"
                                     type="password"
@@ -63,33 +65,12 @@ const Signin = () => {
                                 />
                             </div>
                         </div>
-
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember_me"
-                                    name="remember_me"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                                />
-                                <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
-                                    Remember me
-                                </label>
-                            </div>
-
-                            <div className="text-sm">
-                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                    Forgot your password?
-                                </a>
-                            </div>
-                        </div>
-
                         <div>
                             <button onClick={getFormData}
                                 type="submit"
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Sign in
+                                Sign up
                             </button>
                         </div>
                     </form>
@@ -99,4 +80,4 @@ const Signin = () => {
     )
 };
 
-export default Signin;
+export default Signup;
