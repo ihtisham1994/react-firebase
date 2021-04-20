@@ -1,15 +1,32 @@
-import React, {useRef} from "react";
-import {Link} from "react-router-dom";
+import React, {useRef, useState, useEffect } from "react";
+import {Link, useHistory } from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext";
 
 
-const Signin = () => {
+const Login = () => {
 
     const emailRef = useRef();
     const passwordRef = useRef();
+    const { login, currentUser } = useAuth();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
 
-    const getFormData = (e) => {
+    useEffect(() => {
+        currentUser ? history.push('/') : <Login/>;
+    });
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Email--->>>", emailRef.current.value, "Password--->>>", passwordRef.current.value);
+        try{
+            setError('');
+            setLoading(true);
+            await login( emailRef.current.value, passwordRef.current.value );
+            history.push('/');
+        } catch (e) {
+            setError('failed to log in')
+        }
+        setLoading(false);
     };
 
     return (
@@ -20,7 +37,7 @@ const Signin = () => {
                     src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                     alt="Workflow"
                 />
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Log In to your account</h2>
                 <p className="mt-2 text-center text-sm text-gray-600 max-w">
                     Or{' '}
                     <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -31,7 +48,20 @@ const Signin = () => {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <form className="space-y-6" action="#" method="POST">
+                    {error &&
+                    <div className="rounded-md bg-red-50 p-4">
+                        <div className="flex">
+                            <div className="ml-3">
+                                <div className="mt-2 text-sm text-red-700">
+                                    <ul className="list-disc pl-5 space-y-1">
+                                        <li>{ error }</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Email address
@@ -85,11 +115,12 @@ const Signin = () => {
                         </div>
 
                         <div>
-                            <button onClick={getFormData}
+                            <button
                                 type="submit"
+                                disabled={loading}
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Sign in
+                                Log In
                             </button>
                         </div>
                     </form>
@@ -99,4 +130,4 @@ const Signin = () => {
     )
 };
 
-export default Signin;
+export default Login;

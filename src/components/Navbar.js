@@ -1,8 +1,12 @@
-import React, { Fragment } from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { MenuIcon, ShoppingCartIcon, XIcon} from '@heroicons/react/outline';
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
+import { useAuth } from "../contexts/AuthContext";
+import {auth} from "../firebase";
+
 
 const navigation = [
     { name: 'MENU', href: '#', current: true },
@@ -16,6 +20,29 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
+
+    const [error, setError] = useState('');
+    // const { signUp } = useAuth();
+    const history = useHistory();
+
+    /*async function handleLogout () {
+        setError('');
+
+        try {
+            await logout();
+            history.push('/login');
+        } catch (e) {
+            setError('Failed to log out ');
+        }
+
+    }*/
+
+    function handleLogout () {
+        return auth.signOut();
+        // await console.log('This is looking great !!');
+    }
+
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
@@ -128,6 +155,7 @@ const Navbar = () => {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
+                                                                onClick={handleLogout}
                                                                 href="#"
                                                                 className={classNames(
                                                                     active ? 'bg-gray-100' : '',
@@ -152,7 +180,7 @@ const Navbar = () => {
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
-                                    to={item.to}
+                                    to={item.href}
                                     className={classNames(
                                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                         'block px-3 py-2 rounded-md text-base font-medium'
